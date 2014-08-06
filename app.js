@@ -16,14 +16,15 @@ app.get('/keys', function(req, res) {
 });
 
 app.get('/keys/:id', function(req, res) {
-    if(keys.length <= req.params.id || req.params.id < 0) {
-        res.statusCode = 404;
-        return res.send('Error 404: No quote found');
-    }
-    keys.indexOf()
     for (k in keys)
         if (keys[k].username == req.params.id)
-            res.json(keys[k])
+            return res.json(keys[k])
+
+    obj = new Object();
+    obj.username = req.params.id
+    obj.key = "this_is_" + req.params.id + "'s_key"
+    keys.push(obj)
+    return res.json(obj)
 });
 
 app.listen(process.env.PORT || 3000);
