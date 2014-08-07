@@ -3,29 +3,27 @@
  */
 
 var express = require('express');
+var request = require('request');
 var app = express();
+var aasguard = require('aasguard');
 
-var keys = [
-    { username: "test1", key: "this_is_test1's_key"},
-    { username: "test2", key: "this_is_test2's_key"},
-    { username: "test3", key: "this_is_test3's_key"}
-];
-
-app.get('/keys', function(req, res) {
-    res.json(keys);
+app.get('/user_keys', function(req, res) {
+    res.json([]);
 });
 
-app.get('/keys/:id', function(req, res) {
-    for (k in keys)
-        if (keys[k].username == req.params.id)
-            return res.json(keys[k])
-
-    obj = new Object();
-    obj.username = req.params.id
-    obj.key = "this_is_" + req.params.id + "'s_key"
-    keys.push(obj)
-    return res.json(obj)
+app.get('/user_keys/:id', function(req, res) {
+    var id;
+    aasguard.get_user(req.params.id, function(user, error){
+        if (error){
+            aasguard.create_user(req.params.id, "friendly_"+req.params.id, function(user, error){
+                return res.json(user)
+            })
+        } else {
+            return res.json(user);
+        }
+    });
 });
+
+aasguard.set_token("slZxxbJai9hOWyRRYBrMWA");
 
 app.listen(process.env.PORT || 3000);
-
