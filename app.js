@@ -6,6 +6,23 @@ var express = require('express');
 var app = express();
 var aasguard = require('aasguard');
 
+config = require('./config.json');
+
+if (config.api_token  == null){
+    console.error("ERROR: An API Token must be set in the config.json file to connect to SafeX server.  Exiting");
+    process.exit(1)
+}
+
+aasguard.set_token(config.api_token);
+
+aasguard.check()
+    .then(function(){
+        console.log("Successfully connected to SafeX using API Token")
+    })
+    .catch(function(e) {
+        console.warn("WARNING: Was unable to verify connection to SafeX using the API Token")
+    });
+
 app.get('/user_keys', function(req, res) {
     res.json([]);
 });
@@ -26,7 +43,5 @@ app.get('/user_keys/:id', function(req, res) {
                 });
         });
 });
-
-aasguard.set_token("slZxxbJai9hOWyRRYBrMWA");
 
 app.listen(process.env.PORT || 3000);
