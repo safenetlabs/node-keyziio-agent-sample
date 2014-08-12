@@ -8,7 +8,13 @@ to provision a client with a user key.   Once it has the user key, the client ca
 This samnple does not authenticate the clients.  Any real world applicaiton would first authenticate the client before
 handing out the user key.   How this authentication is done is application specific.
 
-Run `npm install` to install dependencies, including the Node.js keyziio agent.    
+### Running the Sample
+
+1. Install Node.js and associated utilites (npm...)
+1. Download the code,and run `npm install` to install dependencies, including the Node.js keyziio agent.'
+1. Go to the keyziio server and generate an api token
+1. Edit the `config.json` file and update with your api token
+1. Run `node app.js` to start the server
 
 ###/user_keys/:id
 
