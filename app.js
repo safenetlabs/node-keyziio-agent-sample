@@ -4,23 +4,23 @@
 
 var express = require('express');
 var app = express();
-var aasguard = require('aasguard');
+var kagent = require('keyziio-agent');
 
 config = require('./config.json');
 
 if (config.api_token  == null){
-    console.error("ERROR: An API Token must be set in the config.json file to connect to SafeX server.  Exiting");
+    console.error("ERROR: An API Token must be set in the config.json file to connect to keyziio server.  Exiting");
     process.exit(1)
 }
 
-aasguard.set_token(config.api_token);
+kagent.set_token(config.api_token);
 
-aasguard.check()
+kagent.check()
     .then(function(){
-        console.log("Successfully connected to SafeX using API Token")
+        console.log("Successfully connected to keyziio using API Token")
     })
     .catch(function(e) {
-        console.warn("WARNING: Was unable to verify connection to SafeX using the API Token")
+        console.warn("WARNING: Was unable to verify connection to keyziio using the API Token")
     });
 
 app.get('/user_keys', function(req, res) {
@@ -29,12 +29,12 @@ app.get('/user_keys', function(req, res) {
 
 app.get('/user_keys/:id', function(req, res) {
     var id;
-    aasguard.get_user(req.params.id)
+    kagent.get_user(req.params.id)
         .then(function(data){
             res.json(data);
          })
         .catch(function(e) {
-            aasguard.create_user(req.params.id, "friendly_"+req.params.id)
+            kagent.create_user(req.params.id, "friendly_"+req.params.id)
                 .then(function(data){
                     res.json(data)
                 })
